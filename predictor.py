@@ -1,21 +1,32 @@
 from lmfit import Model
 from numpy import exp, loadtxt, pi, sqrt
-import matplotlib.pyplot as plt
-from matplotlib.dates import (DateFormatter, WeekdayLocator, MO)
+# import matplotlib.pyplot as plt
+# from matplotlib.dates import (DateFormatter, WeekdayLocator, MO)
 import pandas as pd
 import numpy as np
 
 import sys
+import json
+from json import JSONEncoder
 
-country = "France"
-province = ""
+
+class NumpyArrayEncoder(JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return JSONEncoder.default(self, obj)
+
+
+country = sys.argv[1]
+province = sys.argv[2]
 
 data = pd.read_csv('train.csv')
 data = data[['Date', 'Country/Region',
              'Province/State', 'ConfirmedCases', 'Fatalities']]
 data['Date'] = pd.to_datetime(data['Date'])
 
-data = data[data['Date'] > '2020-03-01']
+if country != "China":
+    data = data[data['Date'] > '2020-03-01']
 
 if country != "":
     data = data[data["Country/Region"] == country]
@@ -26,14 +37,14 @@ data = data.groupby('Date').sum().reset_index()
 data['Deaths'] = data['Fatalities'].diff()
 data = data.fillna(0)
 
-x_date = data['Date']
+x_date = data['Date'].to_numpy()
 x = np.arange(x_date.size)
 x_date_pred = pd.date_range(np.datetime64(
-    'today'), periods=30, freq='D')
+    'today'), periods=30, freq='D').to_numpy()
 x_pred = np.arange(x[-1] + 1, x[-1] + 1 + x_date_pred.size)
 
-y_inf = data['ConfirmedCases']
-y_death = data['Deaths']
+y_inf = data['ConfirmedCases'].to_numpy()
+y_death = data['Deaths'].to_numpy()
 
 
 def gaussian(x, amp, cen, wid):
@@ -47,28 +58,44 @@ y_inf_pred = result_inf.eval(x=x_pred)
 result_death = gmodel.fit(y_death, x=x, amp=5, cen=5, wid=1)
 y_death_pred = result_death.eval(x=x_pred)
 
-# print(result.fit_report())
 
-loc = WeekdayLocator(byweekday=MO)
-formatter = DateFormatter('%d-%m')
+response = {}
+response['inf_data'] = {}
+response['inf_data']['date'] = x_date
+response['inf_data']['y'] = y_inf
+response['death_data'] = {}
+response['death_data']['date'] = x_date
+response['death_data']['y'] = y_death
+response['inf_pred'] = {}
+response['inf_pred']['date'] = x_date_pred
+response['inf_pred']['y'] = y_inf_pred
+response['death_pred'] = {}
+response['death_pred']['date'] = x_date_pred
+response['death_pred']['y'] = y_death_pred
 
-fig, ax = plt.subplots()
+print(json.dumps(response, cls=NumpyArrayEncoder))
 
-# Plot previous values
-plt.plot_date(x_date, y_inf, 'yo')
-plt.plot_date(x_date, y_death, 'ro')
+# Needed only for print
+# loc = WeekdayLocator(byweekday=MO)
+# formatter = DateFormatter('%d-%m')
 
-# Plot predictions
-plt.plot_date(x_date,
-              result_inf.best_fit, 'k-', label='inf: best fit')
-plt.plot_date(x_date,
-              result_death.best_fit, 'r-', label='death: best fit')
-plt.plot_date(x_date_pred, y_inf_pred, 'co', label='inf_predictions')
-plt.plot_date(x_date_pred, y_death_pred, 'mo', label='death_predictions')
-plt.legend(loc='best')
+# fig, ax = plt.subplots()
 
-ax.xaxis.set_major_locator(loc)
-ax.xaxis.set_major_formatter(formatter)
-ax.xaxis.set_tick_params(rotation=30, labelsize=10)
+# # Plot previous values
+# plt.plot_date(x_date, y_inf, 'yo')
+# plt.plot_date(x_date, y_death, 'ro')
 
-plt.show()
+# # Plot predictions
+# plt.plot_date(x_date,
+#               result_inf.best_fit, 'k-', label='inf: best fit')
+# plt.plot_date(x_date,
+#               result_death.best_fit, 'r-', label='death: best fit')
+# plt.plot_date(x_date_pred, y_inf_pred, 'co', label='inf_predictions')
+# plt.plot_date(x_date_pred, y_death_pred, 'mo', label='death_predictions')
+# plt.legend(loc='best')
+
+# ax.xaxis.set_major_locator(loc)
+# ax.xaxis.set_major_formatter(formatter)
+# ax.xaxis.set_tick_params(rotation=30, labelsize=10)
+
+# plt.show()
