@@ -5,24 +5,25 @@ const {
 const app = express()
 const port = 8888
 const path = require('path')
+const base = "/covid19/"
 
-app.get('/', (req, res) => {
+app.get(base + '/', (req, res) => {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.get('/train.csv', (req, res) => {
+app.get(base + '/train.csv', (req, res) => {
     res.sendFile(path.join(__dirname + '/train.csv'));
 });
 
-app.get('/chart.js', (req, res) => {
+app.get(base + '/chart.js', (req, res) => {
     res.sendFile(path.join(__dirname + '/chart.js'));
 });
 
-app.get('/node_modules/chart.js/dist/Chart.js', (req, res) => {
+app.get(base + '/node_modules/chart.js/dist/Chart.js', (req, res) => {
     res.sendFile(path.join(__dirname + '/node_modules/chart.js/dist/Chart.js'));
 });
 
-app.get('/predict', (req, res) => {
+app.get(base + '/predict', (req, res) => {
 
     var dataToSend;
     // spawn new child process to call the python script
@@ -46,7 +47,7 @@ app.get('/predict', (req, res) => {
 
 });
 
-app.get('/places', (req, res) => {
+app.get(base + '/places', (req, res) => {
 
     var dataToSend;
     // spawn new child process to call the python script
