@@ -27,13 +27,12 @@ app.use(base, express.static(path.join(__dirname, 'static/')));
 
 app.get(base + '/predict', (req, res) => {
 
-    var dataToSend;
+    var dataToSend = "";
     // spawn new child process to call the python script
-    console.log(req.query.country + req.query.province);
     const python = spawn('python', ['predictor.py', req.query.country, req.query.province]);
     // collect data from script
     python.stdout.on('data', function (data) {
-        dataToSend = data.toString();
+        dataToSend += data.toString();
     });
 
     python.stderr.on('data', function (data) {
@@ -51,13 +50,12 @@ app.get(base + '/predict', (req, res) => {
 
 app.get(base + '/places', (req, res) => {
 
-    var dataToSend;
+    var dataToSend = "";
     // spawn new child process to call the python script
     const python = spawn('python', ['details.py']);
     // collect data from script
     python.stdout.on('data', function (data) {
-        console.log('Pipe data from python script ...');
-        dataToSend = data.toString();
+        dataToSend += data.toString();
     });
     // in close event we are sure that stream from child process is closed
     python.on('close', (code) => {
