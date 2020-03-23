@@ -95,7 +95,9 @@ var chart = new Chart(ctx, {
         title: {
             display: true,
             text: '-',
-        }
+        },
+        responsive: true,
+        maintainAspectRatio: false,
     }
 });
 
