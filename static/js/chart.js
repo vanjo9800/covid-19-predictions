@@ -84,8 +84,12 @@ var chart = new Chart(ctx, {
                 time: {
                     displayFormats: {
                         day: 'DD/MM'
-                    }
-                }
+                    },
+                },
+                ticks: {
+                    source: 'auto',
+                },
+                bounds: 'data',
             }]
         },
         title: {
