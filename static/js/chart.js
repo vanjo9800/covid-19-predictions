@@ -20,6 +20,7 @@ function createSelectWindows(data) {
         option.value = country;
         countriesSelect.appendChild(option);
     }
+    $('#country').select2();
     countriesSelect.onchange = function () {
         var country = document.getElementById('country').value;
         var province = document.getElementById('province');
@@ -39,6 +40,7 @@ function createSelectWindows(data) {
                 optionProv.value = data[country][prov];
                 province.appendChild(optionProv);
             }
+            $('#province').select2();
         }
     };
 }
@@ -133,7 +135,6 @@ function addData(info) {
     chart.update();
 }
 
-
-document.addEventListener("DOMContentLoaded", function () {
+$(document).ready(function () {
     loadDetails();
 });

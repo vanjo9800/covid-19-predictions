@@ -13,6 +13,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"
         integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
     <title>COVID-19 Spread</title>
 </head>
 
@@ -27,11 +30,11 @@
             <hr class="my-4">
             <p>Keep in mind that the data here is merely a prediction and it is done by purely a mathematical model!</p>
         </div>
-        <select class="custom-select custom-select-lg mb-3" id="country">
+        <select class="custom-select custom-select-lg mb-3" id="country" class="chosen-select">
             <option selected value="">Select country/region</option>
         </select>
 
-        <select style="display: none" class="custom-select custom-select-sm" id="province">
+        <select style="display: none" class="custom-select custom-select-sm" id="province" class="chosen-select">
             <option selected value="">Select province/state</option>
         </select>
 
@@ -52,9 +55,6 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
