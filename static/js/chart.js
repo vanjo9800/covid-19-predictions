@@ -1,6 +1,6 @@
 function loadDetails() {
     const Http = new XMLHttpRequest();
-    const url = '/places';
+    const url = window.location.href + '/places';
     Http.open("GET", url);
     Http.send();
 
@@ -45,7 +45,7 @@ function createSelectWindows(data) {
 
 function loadPredictions() {
     const Http = new XMLHttpRequest();
-    const url = '/predict?country=' + document.getElementById('country').value + "&province=" + document.getElementById('province').value;
+    const url = window.location.href + '/predict?country=' + document.getElementById('country').value + "&province=" + document.getElementById('province').value;
     Http.open("GET", url);
     Http.send();
 
