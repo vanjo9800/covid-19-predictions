@@ -15,13 +15,15 @@ app.get(base + '/train.csv', (req, res) => {
     res.sendFile(path.join(__dirname + '/train.csv'));
 });
 
-app.get(base + '/chart.js', (req, res) => {
-    res.sendFile(path.join(__dirname + '/chart.js'));
-});
+app.use(base, express.static(path.join(__dirname, 'node_modules/')));
+app.use(base, express.static(path.join(__dirname, 'static/')));
+// app.get(base + '/chart.js', (req, res) => {
+//     res.sendFile(path.join(__dirname + '/chart.js'));
+// });
 
-app.get(base + '/node_modules/chart.js/dist/Chart.js', (req, res) => {
-    res.sendFile(path.join(__dirname + '/node_modules/chart.js/dist/Chart.js'));
-});
+// app.get(base + '/node_modules/chart.js/dist/Chart.js', (req, res) => {
+//     res.sendFile(path.join(__dirname + '/node_modules/chart.js/dist/Chart.js'));
+// });
 
 app.get(base + '/predict', (req, res) => {
 
