@@ -12,8 +12,9 @@ class NumpyArrayEncoder(JSONEncoder):
         return JSONEncoder.default(self, obj)
 
 
-data = pd.read_csv('train.csv')
+data = pd.read_csv('covid-19.csv')
 data = data[['Date', 'Country/Region', 'Province/State']]
+data = data.fillna('')
 
 countries = data['Country/Region'].unique()
 

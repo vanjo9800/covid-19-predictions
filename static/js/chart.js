@@ -120,22 +120,22 @@ function addData(info) {
 
     chart.data.datasets.push({});
     chart.data.datasets[0].data = formatData(info['inf_data']);
-    chart.data.datasets[0].label = "Confirmed cases";
+    chart.data.datasets[0].label = "Active cases";
     chart.data.datasets[0].backgroundColor = 'orange';
 
     chart.data.datasets.push({});
     chart.data.datasets[1].data = formatData(info['inf_pred']);
-    chart.data.datasets[1].label = "Predicted cases";
+    chart.data.datasets[1].label = "Predicted active cases";
     chart.data.datasets[1].backgroundColor = 'magenta';
 
     chart.data.datasets.push({});
     chart.data.datasets[2].data = formatData(info['death_data']);
-    chart.data.datasets[2].label = "Confirmed deaths";
+    chart.data.datasets[2].label = "Confirmed deaths rate";
     chart.data.datasets[2].backgroundColor = 'red';
 
     chart.data.datasets.push({});
     chart.data.datasets[3].data = formatData(info['death_pred']);
-    chart.data.datasets[3].label = "Predicted deaths";
+    chart.data.datasets[3].label = "Predicted deaths rate";
     chart.data.datasets[3].backgroundColor = 'purple';
 
     chart.update();

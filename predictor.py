@@ -20,9 +20,9 @@ class NumpyArrayEncoder(JSONEncoder):
 country = sys.argv[1]
 province = sys.argv[2]
 
-data = pd.read_csv('train.csv')
+data = pd.read_csv('covid-19.csv')
 data = data[['Date', 'Country/Region',
-             'Province/State', 'ConfirmedCases', 'Fatalities']]
+             'Province/State', 'Confirmed', 'Recovered', 'Deaths']]
 data['Date'] = pd.to_datetime(data['Date'])
 
 if country != "China":
@@ -34,7 +34,8 @@ if country != "":
         data = data[data["Province/State"] == province]
 
 data = data.groupby('Date').sum().reset_index()
-data['Deaths'] = data['Fatalities'].diff()
+data['DeathsRate'] = data['Deaths'].diff()
+data['Active'] = data['Confirmed'] - data['Recovered']
 data = data.fillna(0)
 
 x_date = data['Date'].to_numpy()
@@ -43,8 +44,8 @@ x_date_pred = pd.date_range(np.datetime64(
     'today'), periods=30, freq='D').to_numpy()
 x_pred = np.arange(x[-1] + 1, x[-1] + 1 + x_date_pred.size)
 
-y_inf = data['ConfirmedCases'].to_numpy()
-y_death = data['Deaths'].to_numpy()
+y_inf = data['Active'].to_numpy()
+y_death = data['DeathsRate'].to_numpy()
 
 
 def gaussian(x, amp, cen, wid):
